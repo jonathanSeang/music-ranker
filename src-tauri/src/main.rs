@@ -3,14 +3,21 @@
   windows_subsystem = "windows"
 )]
 
+mod model;
+mod controller;
+
+use crate::controller::song::{
+  init, write_song, read_songs
+};
+
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![greet])
+    .invoke_handler(tauri::generate_handler![
+      init,
+      write_song,
+      read_songs
+      ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-   format!("Hello, {}!", name)
-}
