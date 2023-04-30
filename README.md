@@ -1,3 +1,24 @@
+## Objective: Rank and filter your music
+
+---
+
+## TODO
+
+- ~~Write music to txt file~~
+- Read music from txt file
+- Create form to insert new music
+- Neatly display music 
+    - Rank list table
+    - Show "about" and "lyrics" tab
+- Fetch music based on filter
+    - Switch between users
+- CRUD user comments
+- Download music files
+- Audio player on available downloaded music
+- Create playlist
+
+---
+
 ## Running program
 
 cargo tauri dev
@@ -23,13 +44,8 @@ data structure
 - song
     - song name
     - main artist
-    - genre [array]
     - album
+    - main genre
     - language
     - lyrics
-    - rating (int 0-20)
-
-- comment
-    - song id
-    - comment
-    - uploader
+    - rating (range: [0, 20])
