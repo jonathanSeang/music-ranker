@@ -1,6 +1,5 @@
 use serde_json;
 
-use std::{fs, path};
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -10,16 +9,16 @@ use crate::model::song::Song;
 
 #[tauri::command]
 pub fn init() {
-    let ex_song = Song {
-        name: String::from("The Garden"),
-        artist: String::from("The Family Crest"),
-        album: String::from("The War: Act II"),
-        genre: String::from("Orchestra"),
-        language: String::from("English"),
-        lyrics: String::from("There's a garden..."),
-        rating: 18
-    };
-    write_song(ex_song, "jon");
+    // let ex_song = Song {
+    //     name: String::from("The Garden"),
+    //     artist: String::from("The Family Crest"),
+    //     album: String::from("The War: Act II"),
+    //     genre: String::from("Orchestra"),
+    //     language: String::from("English"),
+    //     lyrics: String::from("There's a garden..."),
+    //     rating: 18
+    // };
+    // write_song(ex_song, "jon");
 }
 
 //WRITE---------------------------------------------------
@@ -61,12 +60,34 @@ fn write_file(name: &str, data: &str) {
 
 //read all songs from given uploader
 #[tauri::command]
-pub fn read_songs(uploader: &str) -> Vec<Song>{
+pub fn read_songs(name: &str) -> Vec<Song>{
+// pub async fn read_songs() -> Vec<Song>{
+
+    // Create a path to the desired file
+    let path_name = format!("data/{}.txt", name);
+    let path = Path::new(&path_name);
+    let display = path.display();
+
+    // Open the path in read-only mode, returns `io::Result<File>`
+    let mut file = match File::open(&path) {
+        Err(why) => panic!("couldn't open {}: {}", display, why),
+        Ok(file) => file,
+    };
+
+    // Read the file contents into a string, returns `io::Result<usize>`
+    let mut read_serialized_song = String::new();
+    match file.read_to_string(&mut read_serialized_song) {
+        Err(why) => panic!("couldn't read {}: {}", display, why),
+        Ok(_) => print!("{} contains:\n{}", display, read_serialized_song),
+    }
+
+    // `file` goes out of scope, and the "hello.txt" file gets closed
 
    //let read_serialized_song = String::new();
-   //let deserialized_song: Song = serde_json::from_str(read_serialized_song.as_str()).unwrap();
+   let deserialized_song: Song = serde_json::from_str(read_serialized_song.as_str()).unwrap();
 
     let mut songs: Vec<Song> = Vec::new();
+    songs.push(deserialized_song);
     songs
 
 }
