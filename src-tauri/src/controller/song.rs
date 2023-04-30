@@ -18,14 +18,29 @@ pub fn init() {
     //     lyrics: String::from("There's a garden..."),
     //     rating: 18
     // };
-    // write_song(ex_song, "jon");
+
+    // let ex_song2 = Song {
+    //     name: String::from("I sleep with the windows open"),
+    //     artist: String::from("The Family Crest"),
+    //     album: String::from("The War: Act II"),
+    //     genre: String::from("Orchestra"),
+    //     language: String::from("English"),
+    //     lyrics: String::from("There's a garden..."),
+    //     rating: 19
+    // };
+// 
+    // let mut songs: Vec<Song> = Vec::new();
+    // songs.push(ex_song);
+    // songs.push(ex_song2);
+    // write_song(songs, "jon");
+
 }
 
 //WRITE---------------------------------------------------
 
 //write song to file 
 #[tauri::command]
-pub fn write_song(song: Song, uploader: &str) {
+pub fn write_song(song: Vec<Song>, uploader: &str) {
 
    let serialized_song = serde_json::to_string(&song).unwrap();
    write_file(&uploader, &serialized_song);
@@ -75,19 +90,15 @@ pub fn read_songs(name: &str) -> Vec<Song>{
     };
 
     // Read the file contents into a string, returns `io::Result<usize>`
-    let mut read_serialized_song = String::new();
-    match file.read_to_string(&mut read_serialized_song) {
+    let mut raw_songs = String::new();
+    match file.read_to_string(&mut raw_songs) {
         Err(why) => panic!("couldn't read {}: {}", display, why),
-        Ok(_) => print!("{} contains:\n{}", display, read_serialized_song),
+        Ok(_) => print!("{} contains:\n{}", display, raw_songs),
     }
 
     // `file` goes out of scope, and the "hello.txt" file gets closed
 
-   //let read_serialized_song = String::new();
-   let deserialized_song: Song = serde_json::from_str(read_serialized_song.as_str()).unwrap();
-
-    let mut songs: Vec<Song> = Vec::new();
-    songs.push(deserialized_song);
+    let songs: Vec<Song> = serde_json::from_str(raw_songs.as_str()).unwrap();
     songs
 
 }
