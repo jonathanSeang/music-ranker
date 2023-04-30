@@ -5,6 +5,7 @@ export interface Song {
     album: string,
     genre: string,
     language: string,
+    instrumental: boolean,
     lyrics: string,
     rating: number
 

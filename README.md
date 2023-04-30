@@ -5,7 +5,7 @@
 ## TODO
 
 - ~~Write music to txt file~~
-- Read music from txt file
+- ~~Read music from txt file~~
 - Create form to insert new music
 - Neatly display music 
     - Rank list table

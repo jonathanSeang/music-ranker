@@ -8,6 +8,7 @@ pub struct Song {
     pub album: String,
     pub genre: String,
     pub language: String,
+    pub instrumental: bool,
     pub lyrics: String,
     pub rating: u8
 

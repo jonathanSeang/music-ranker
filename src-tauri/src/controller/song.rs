@@ -8,6 +8,11 @@ use std::path::Path;
 use crate::model::song::Song;
 
 #[tauri::command]
+pub fn safe_fn() {
+    print!("SAFE");
+}
+
+#[tauri::command]
 pub fn init() {
     // let ex_song = Song {
     //     name: String::from("The Garden"),
@@ -15,6 +20,7 @@ pub fn init() {
     //     album: String::from("The War: Act II"),
     //     genre: String::from("Orchestra"),
     //     language: String::from("English"),
+    //     instrumental: false,
     //     lyrics: String::from("There's a garden..."),
     //     rating: 18
     // };
@@ -25,14 +31,15 @@ pub fn init() {
     //     album: String::from("The War: Act II"),
     //     genre: String::from("Orchestra"),
     //     language: String::from("English"),
+    //     instrumental: false,
     //     lyrics: String::from("There's a garden..."),
     //     rating: 19
     // };
-// 
+
     // let mut songs: Vec<Song> = Vec::new();
     // songs.push(ex_song);
     // songs.push(ex_song2);
-    // write_song(songs, "jon");
+    // write_songs(songs, "jon");
 
 }
 
@@ -40,9 +47,10 @@ pub fn init() {
 
 //write song to file 
 #[tauri::command]
-pub fn write_song(song: Vec<Song>, uploader: &str) {
+pub fn write_songs(songs: Vec<Song>, uploader: &str) {
+// pub fn write_songs() {
 
-   let serialized_song = serde_json::to_string(&song).unwrap();
+   let serialized_song = serde_json::to_string(&songs).unwrap();
    write_file(&uploader, &serialized_song);
 
 }
@@ -64,7 +72,7 @@ fn write_file(name: &str, data: &str) {
     // Write the `LOREM_IPSUM` string to `file`, returns `io::Result<()>`
     match file.write_all(data.as_bytes()) {
         Err(why) => panic!("couldn't write to {}: {}", display, why),
-        Ok(_) => println!("successfully wrote to {}", display),
+        Ok(_) => (),
     }
 
 }
@@ -93,12 +101,9 @@ pub fn read_songs(name: &str) -> Vec<Song>{
     let mut raw_songs = String::new();
     match file.read_to_string(&mut raw_songs) {
         Err(why) => panic!("couldn't read {}: {}", display, why),
-        Ok(_) => print!("{} contains:\n{}", display, raw_songs),
+        Ok(_) => (),
     }
 
-    // `file` goes out of scope, and the "hello.txt" file gets closed
-
-    let songs: Vec<Song> = serde_json::from_str(raw_songs.as_str()).unwrap();
-    songs
+    return serde_json::from_str(raw_songs.as_str()).unwrap();
 
 }
