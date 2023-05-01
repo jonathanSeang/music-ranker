@@ -28,11 +28,25 @@ export default function Home() {
   //filter current data if filter changes
 
   const [songs, setSongs] = useState<Song[]>([]);
+  const [activeSong, setActiveSong] = useState<Song>({
+    name: "null",
+    artist: "",
+    album: "",
+    genre: "",
+    language: "",
+    instrumental: false,
+    lyrics: "",
+    rating: 0
+  });
 
   const fetchSongs = async (name: string) => {
-
     await invoke("read_songs", {name: name}).then((t) => setSongs(t as SetStateAction<Song[]>))
-  
+
+  }
+
+  const handleSongClick = (song: Song) => {
+    console.log("clicked")
+    setActiveSong(song);
   }
 
   return (
@@ -40,8 +54,8 @@ export default function Home() {
       <h1>Music Ranker</h1>
       <div className='flex'>
         <LeftColumn songs={songs}/>
-        <SongsDisplay songs={songs}/>
-        <RightColumn/>
+        <SongsDisplay songs={songs} onHandleSongClick={handleSongClick}/>
+        <RightColumn activeSong={activeSong}/>
       </div>
 
     </main>

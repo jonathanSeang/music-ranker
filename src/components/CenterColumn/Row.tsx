@@ -1,17 +1,19 @@
 import React from 'react'
 import { Song } from '@/model/song'
+import Cell from './Cell'
 
 
-const Row = (props: {row: Song[]}) => {
+const Row = (props: {currRating: number, row: Song[], onHandleSongClick: (song: Song) => void}) => {
 
   const elements = props.row.map((song) => {
     return(
-      <div>{song.name} and {song.rating}</div>
+      <Cell song={song} onHandleSongClick={props.onHandleSongClick}/>
     )
   })
 
   return (
-    <div>
+    <div className='flex flex-row'>
+      <p className='w-10 border border-cyan-500'>{props.currRating}</p>
       {elements}
     </div>
 

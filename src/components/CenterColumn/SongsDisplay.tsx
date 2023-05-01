@@ -3,7 +3,7 @@ import { Song } from '@/model/song';
 
 import Row from './Row';
 
-const SongsDisplay = (props: { songs: Song[] }) => {
+const SongsDisplay = (props: { songs: Song[], onHandleSongClick: (song: Song) => void }) => {
 
   const sortedSongs = props.songs.sort((a, b) => {
     if (a.rating === b.rating) 
@@ -24,31 +24,32 @@ const SongsDisplay = (props: { songs: Song[] }) => {
     //if rating changes, make new row
     let currRow: Song[] = [];
 
-    // if(sortedSongs.length === 0)
-    //   return <></>;
+    if(sortedSongs.length === 0)
+      return <></>;
     let currRating = sortedSongs[0].rating;
     let result: JSX.Element[] = []
 
+    console.log(sortedSongs);
     sortedSongs.map((song, id) => {
       if(song.rating === currRating) {
         currRow = [...currRow, song];
       }
 
       else {
+        result = [...result, <Row currRating= {currRating} row={currRow} onHandleSongClick={props.onHandleSongClick}/>];
         currRating = song.rating;
-        result = [...result, <Row row={currRow} />];
         currRow = [song]; //reset rows
       }
     })
 
-    result = [...result, <Row row={currRow} />];
+    result = [...result, <Row currRating= {currRating} row={currRow} onHandleSongClick={props.onHandleSongClick}/>];
     return result;
 
   }
 
 
   return (
-    <div className='flex-1 border border-yellow-700'>
+    <div className='flex-1 border border-yellow-700 p-5'>
       <h1>Song Display</h1>
       {groupedSongs()}
       

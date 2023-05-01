@@ -45,7 +45,7 @@ const SongAdd = (props: { songs: Song[] }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col justify-center'>
+    <form onSubmit={handleSubmit} className='flex flex-col justify-center p-5'>
       <label className=''>Song name:
       <input 
         type="text" 
